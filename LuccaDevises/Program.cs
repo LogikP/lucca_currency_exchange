@@ -6,8 +6,19 @@ namespace LuccaDevises
     {
         private static void Main(string[] args)
         {
-            FileParser fileParser = new FileParser(args[0]);
-            Console.WriteLine("Hello, World!");
+            try
+            {
+                if (args.Length != 1)
+                {
+                    throw new Exception("Bad number of arguments");
+                }
+                var fileParser = new FileParser(args[0]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Environment.Exit(84);
+            }
         }
     }
 }

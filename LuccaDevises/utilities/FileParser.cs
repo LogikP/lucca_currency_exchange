@@ -1,21 +1,17 @@
-
 namespace LuccaDevises.utilities
 {
+
+    // interface IFileParser
+    // {
+    //     
+    // }
     public class FileParser
     {
         private static IEnumerable<string> OpenFile(string filePath)
         {
-            var lines = Array.Empty<string>();
-            try
-            {
-                lines = File.ReadAllLines(filePath);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                Environment.Exit(84);
-            }
-
+            var lines = File.ReadAllLines(filePath);
+            Error error = new Error();
+            error.CheckFile(lines);
             return lines;
         }
 
