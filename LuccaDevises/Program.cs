@@ -1,4 +1,5 @@
-﻿using LuccaDevises.utilities;
+﻿using LuccaDevises.algo;
+using LuccaDevises.utilities;
 
 namespace LuccaDevises
 {
@@ -12,7 +13,13 @@ namespace LuccaDevises
                 {
                     throw new Exception("Bad number of arguments");
                 }
-                var fileParser = new FileParser(args[0]);
+                
+                FileParser fileParser = new FileParser(args[0]);
+                
+                Algo algo = new Algo(fileParser.ToConvert, fileParser.ConversionsArrayLength,
+                    fileParser.ConversionsArray);
+                
+                algo.Convert();
             }
             catch (Exception e)
             {
