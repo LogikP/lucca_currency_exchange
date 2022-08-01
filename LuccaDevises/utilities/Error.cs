@@ -2,15 +2,27 @@ using System.Text.RegularExpressions;
 
 namespace LuccaDevises.utilities
 {
-    // interface IError
-    // {
-    // }
-
     public class Error
     {
         private readonly Regex _lineFormat = new Regex(@"([a-zA-Z\s]{3});(-?[0-9]*);([a-zA-Z\s]{3})$");
         private readonly Regex _lineNumber = new Regex(@"([0-9]*)$");
         private readonly Regex _lineToConvert = new Regex(@"([a-zA-Z\s]{3});([a-zA-Z\s]{3});[0-9]*(?:\.[0-9]{0,4})$");
+
+        public Error()
+        {
+        }
+
+        public void CheckFile(string[] file)
+        {
+            if (file.Length < 3)
+            {
+                throw new Exception("The file given in input must contains at least 3 lines");
+            }
+
+            this.CheckFirstLine(file[0]);
+            this.CheckSecondLine(file[1]);
+            this.CheckConversionArray(file);
+        }
 
         #region LinesVerification
 
@@ -67,21 +79,5 @@ namespace LuccaDevises.utilities
         }
 
         #endregion
-
-        public Error()
-        {
-        }
-
-        public void CheckFile(string[] file)
-        {
-            if (file.Length < 3)
-            {
-                throw new Exception("The file given in input must contains at least 3 lines");
-            }
-
-            this.CheckFirstLine(file[0]);
-            this.CheckSecondLine(file[1]);
-            this.CheckConversionArray(file);
-        }
     }
 }

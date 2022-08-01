@@ -19,7 +19,7 @@ namespace LuccaDevises
                 Algo algo = new Algo(fileParser.ToConvert, fileParser.ConversionsArrayLength,
                     fileParser.ConversionsArray);
                 
-                algo.Convert();
+                algo.Exchange();
             }
             catch (Exception e)
             {

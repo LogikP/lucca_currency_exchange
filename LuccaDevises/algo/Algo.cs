@@ -32,13 +32,12 @@ namespace LuccaDevises.algo
         }
 
 
-        public void Convert()
+        public void Exchange()
         {
             Graph<string> graph = new Graph<string>(_nodes, _edges);
-            Func<string, IEnumerable<string>> shortestPath = GetShortestPath(graph, _toConvertArray[0]);
-            List<string> path = shortestPath(this._toConvertArray[2]).ToList<string>();
 
-            Console.WriteLine(MakeConversion(path));
+            Console.WriteLine(MakeExchange(GetShortestPath(graph, this._toConvertArray[0])(this._toConvertArray[2])
+                .ToList<string>()));
         }
 
         private void InitGraph()
@@ -54,18 +53,18 @@ namespace LuccaDevises.algo
 
                 Tuple<string, string, string> newTuple =
                     new Tuple<string, string, string>(values[0], values[1], values[2]);
-                if (!_edges.Contains(newTuple))
-                    _edges.Add(newTuple);
-                if (!_nodes.Contains(newTuple.Item1))
-                    _nodes.Add(newTuple.Item1);
-                if (!_nodes.Contains(newTuple.Item2))
-                    _nodes.Add(newTuple.Item2);
+                if (!this._edges.Contains(newTuple))
+                    this._edges.Add(newTuple);
+                if (!this._nodes.Contains(newTuple.Item1))
+                    this._nodes.Add(newTuple.Item1);
+                if (!this._nodes.Contains(newTuple.Item2))
+                    this._nodes.Add(newTuple.Item2);
             }
         }
 
-        private int MakeConversion(List<string> path)
+        private int MakeExchange(List<string> path)
         {
-            float.TryParse(_toConvertArray[1], out var valueToConvert);
+            float.TryParse(this._toConvertArray[1], out var valueToConvert);
 
             for (var i = 0; i < path.Count - 1; i++)
             {
@@ -73,17 +72,19 @@ namespace LuccaDevises.algo
                 {
                     if (IsReverse(values, path[i], path[i + 1]) == ToReverse.NothingToDo)
                     {
-                        valueToConvert = CalculConversion(false, valueToConvert, values.Item3);
+                        valueToConvert = CalculConversion(valueToConvert, values.Item3, false);
                     }
                     else if (IsReverse(values, path[i], path[i + 1]) == ToReverse.Reverse)
                     {
-                        valueToConvert = CalculConversion(true, valueToConvert, values.Item3);
+                        valueToConvert = CalculConversion(valueToConvert, values.Item3, true);
                     }
                 }
             }
 
             return (int) Math.Round(valueToConvert);
         }
+
+        #region Utilities
 
         private static ToReverse IsReverse(Tuple<string, string, string> values, string elem, string next)
         {
@@ -95,22 +96,20 @@ namespace LuccaDevises.algo
             {
                 return ToReverse.Reverse;
             }
+
             return ToReverse.NotFound;
         }
 
-        private static float CalculConversion(bool reverse, float valueToConvert, string multiplicator)
+        private static float CalculConversion(float valueToConvert, string multiplicator, bool reverse)
         {
-            float.TryParse(multiplicator, out var res);
+            float.TryParse(multiplicator, out var floatMultiplicator);
             if (reverse)
             {
-                res = 1 / res;
-                res = (float) Math.Round(res, 4);
+                floatMultiplicator = 1 / floatMultiplicator;
+                floatMultiplicator = (float) Math.Round(floatMultiplicator, 4);
             }
 
-            valueToConvert *= res;
-            valueToConvert = (float) Math.Round(valueToConvert, 4);
-
-            return valueToConvert;
+            return (float) Math.Round(valueToConvert *= floatMultiplicator, 4);
         }
 
         private static string[] SubStr(string line)
@@ -153,5 +152,7 @@ namespace LuccaDevises.algo
 
             return ShortestPath;
         }
+
+        #endregion
     }
 }
